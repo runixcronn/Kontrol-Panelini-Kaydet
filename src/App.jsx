@@ -29,9 +29,13 @@ export default function App() {
   });
 
   const [widgetConfig, setWidgetConfig] = useState(() => {
-    const storedConfig = localStorage.getItem("widgetConfig");
-    return storedConfig ? JSON.parse(storedConfig) : DEFAULT_CONFIG;
+    if (typeof window !== "undefined") {
+      const storedConfig = localStorage.getItem("widgetConfig");
+      return storedConfig ? JSON.parse(storedConfig) : DEFAULT_CONFIG;
+    }
+    return DEFAULT_CONFIG; // SSR sırasında fallback
   });
+
   const [saveRequested, setSaveRequested] = useState(false);
 
   function save() {
